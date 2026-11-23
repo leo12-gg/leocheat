@@ -289,7 +289,10 @@
           <li>HWID-bound license key</li>
           <li>Timer starts on first redeem</li>
         </ul>
-        <a class="btn btn-ghost" href="https://leocheat.mysellauth.com/product/1-day-access" target="_blank" rel="noopener">Buy Now</a>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a class="btn btn-ghost" href="https://leocheat.mysellauth.com/product/1-day-access" target="_blank" rel="noopener">Buy Online</a>
+          <button class="btn btn-ghost buy-btn" data-plan="1 Day Access" data-price="$2">Bank Transfer</button>
+        </div>
       </div>
 
       <div class="price-card">
@@ -300,7 +303,10 @@
           <li>HWID-bound license key</li>
           <li>Priority loader updates</li>
         </ul>
-        <a class="btn btn-ghost" href="https://leocheat.mysellauth.com/product/7-days-access" target="_blank" rel="noopener">Buy Now</a>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a class="btn btn-ghost" href="https://leocheat.mysellauth.com/product/7-days-access" target="_blank" rel="noopener">Buy Online</a>
+          <button class="btn btn-ghost buy-btn" data-plan="7 Days Access" data-price="$6">Bank Transfer</button>
+        </div>
       </div>
 
       <div class="price-card popular">
@@ -312,7 +318,10 @@
           <li>HWID-bound license key</li>
           <li>All updates &amp; config profiles</li>
         </ul>
-        <a class="btn btn-primary" href="https://leocheat.mysellauth.com/product/30-days-access" target="_blank" rel="noopener">Buy Now</a>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a class="btn btn-primary" href="https://leocheat.mysellauth.com/product/30-days-access" target="_blank" rel="noopener">Buy Online</a>
+          <button class="btn btn-ghost buy-btn" data-plan="30 Days Access" data-price="$10">Bank Transfer</button>
+        </div>
       </div>
     </section>
 
@@ -347,27 +356,23 @@
   <div class="modal-backdrop" id="checkout-modal">
     <div class="modal">
       <div class="modal-head">
-        <h3>Complete Purchase</h3>
+        <h3>Bank Transfer</h3>
         <button class="close-x" id="close-modal">&times;</button>
       </div>
       <div class="order-box">
         <div class="order-row"><span style="color:var(--muted)">Plan</span><strong id="m-plan">30 Days Access</strong></div>
-        <div class="order-row"><span style="color:var(--muted)">Total</span><strong id="m-price">$25</strong></div>
+        <div class="order-row"><span style="color:var(--muted)">Amount</span><strong id="m-price">$10</strong></div>
+        <div class="order-row"><span style="color:var(--muted)">Name</span><strong>KHAMIS ALBUAINAIN</strong></div>
+        <div class="order-row"><span style="color:var(--muted)">IBAN</span><strong id="m-iban" style="font-size:12.5px;letter-spacing:0.3px;">SA2836036036043695882103</strong></div>
       </div>
       <div class="field">
-        <label>Your Discord Username or Email</label>
+        <label>Your Discord Username or Email (for key delivery)</label>
         <input type="text" id="buyer-contact" placeholder="e.g. username or you@email.com" />
       </div>
-      <div class="field">
-        <label>Payment Method</label>
-        <select id="pay-method">
-          <option value="Card / Apple Pay">Card / Apple Pay</option>
-          <option value="PayPal">PayPal</option>
-          <option value="Crypto (USDT / LTC / BTC)">Crypto (USDT / LTC / BTC)</option>
-          <option value="STC Pay / Local Transfer">STC Pay / Local Transfer</option>
-        </select>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-ghost" style="flex:1" id="copy-iban">Copy IBAN</button>
+        <button class="btn btn-primary" style="flex:1" id="confirm-order">Copy Order</button>
       </div>
-      <button class="btn btn-primary" style="width:100%" id="confirm-order">Copy Order Details</button>
       <div class="toast" id="order-toast"></div>
     </div>
   </div>
@@ -434,15 +439,23 @@
     document.getElementById('close-modal').addEventListener('click', () => modal.classList.remove('open'));
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 
+    document.getElementById('copy-iban').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('SA2836036036043695882103');
+        toast.textContent = 'IBAN copied!';
+      } catch {
+        toast.textContent = 'IBAN: SA2836036036043695882103';
+      }
+    });
+
     document.getElementById('confirm-order').addEventListener('click', async () => {
       const contact = document.getElementById('buyer-contact').value.trim() || 'Not provided';
-      const method = document.getElementById('pay-method').value;
-      const summary = `leo cheat Order\nPlan: ${mPlan.textContent} (${mPrice.textContent})\nPayment: ${method}\nContact: ${contact}`;
+      const summary = `leo cheat Bank Transfer\nPlan: ${mPlan.textContent} (${mPrice.textContent})\nName: KHAMIS ALBUAINAIN\nIBAN: SA2836036036043695882103\nContact: ${contact}`;
       try {
         await navigator.clipboard.writeText(summary);
-        toast.textContent = 'Order copied! Send it to support to receive your key.';
+        toast.textContent = 'Order copied! Send receipt + this to support for your key.';
       } catch {
-        toast.textContent = 'Ready: ' + mPlan.textContent + ' via ' + method;
+        toast.textContent = 'Ready: ' + mPlan.textContent + ' via Bank Transfer';
       }
     });
   </script>
